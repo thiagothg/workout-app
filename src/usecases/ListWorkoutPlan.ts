@@ -31,33 +31,32 @@ export interface OutputDto {
 }
 
 export class ListWorkoutPlan {
-  async execute(dto: InputDto): Promise<OutputDto | null> {
-    const activeWorkoutPlan = await prisma.workoutPlan.findFirst({
+  async execute(dto: InputDto): Promise<OutputDto[] | null> {
+    const workoutPlans = await prisma.workoutPlan.findMany({
       where: {
         userId: dto.userId,
-        isActive: true,
       },
       include: {
         workoutDays: {
           include: {
-            exercises: true,
+            exercises: { orderBy: { order: "asc" } },
           },
         },
       },
     });
 
-    if (!activeWorkoutPlan) {
+    if (!workoutPlans) {
       return null;
     }
 
-    return {
-      id: activeWorkoutPlan.id,
-      name: activeWorkoutPlan.name,
-      coverImageUrl: activeWorkoutPlan.coverImageUrl,
-      isActive: activeWorkoutPlan.isActive,
-      createdAt: activeWorkoutPlan.createdAt,
-      updatedAt: activeWorkoutPlan.updatedAt,
-      workoutDays: activeWorkoutPlan.workoutDays.map((day) => ({
+    return workoutPlans.map((plan) => ({
+      id: plan.id,
+      name: plan.name,
+      coverImageUrl: plan.coverImageUrl,
+      isActive: plan.isActive,
+      createdAt: plan.createdAt,
+      updatedAt: plan.updatedAt,
+      workoutDays: plan.workoutDays.map((day) => ({
         id: day.id,
         name: day.name,
         weekDay: day.weekDay,
@@ -72,6 +71,6 @@ export class ListWorkoutPlan {
           restTimeInSeconds: exercise.restTimeInSeconds,
         })),
       })),
-    };
+    }));
   }
 }

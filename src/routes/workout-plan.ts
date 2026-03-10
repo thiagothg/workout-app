@@ -89,7 +89,7 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
       tags: ["workout-plan"],
       summary: "List the active workout plan for the user",
       response: {
-        200: WorkoutPlanSchema.nullable(),
+        200: z.array(WorkoutPlanSchema),
         401: ErrorSchema,
         404: ErrorSchema,
         500: ErrorSchema,
