@@ -8,13 +8,23 @@ export const ErrorSchema = z.object({
 });
 
 export const StartWorkoutSessionResponseSchema = z.object({
-  userWorkoutSessionId: z.string().uuid(),
+  userWorkoutSessionId: z.uuid(),
+});
+
+export const UpdateWorkoutSessionBodySchema = z.object({
+  completedAt: z.string().datetime(),
+});
+
+export const UpdateWorkoutSessionResponseSchema = z.object({
+  id: z.uuid(),
+  startedAt: z.coerce.date(),
+  completedAt: z.coerce.date().nullable(),
 });
 
 export const WorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string().trim().min(1),
-  coverImageUrl: z.string().url().nullable(),
+  coverImageUrl: z.url().nullable(),
   isActive: z.boolean(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),

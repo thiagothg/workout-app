@@ -8,6 +8,7 @@ alwaysApply: false
 - nunca use any no Typescript
 - Sempre use arrow functions
 - Sempre use types ao invés de interfaces
+- Para Zod, **NUNCA** use `z.string().url()`, `z.string().uuid()` ou `z.nativeEnum(...)`. **SEMPRE** prefira `z.url()`, `z.uuid()` e `z.enum(...)` como descrito em `‎CLAUDE.md`.
 
 ## Rotas Fastify
 

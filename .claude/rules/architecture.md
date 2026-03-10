@@ -5,6 +5,7 @@
 - **SEMPRE** use `fastify-type-provider-zod` para definir os schemas de request e response de uma rota.
 - **SEMPRE** inclua `tags` e `summary` no schema de cada rota. `tags` (array de strings) agrupa a rota na documentação OpenAPI/Swagger; `summary` descreve de forma concisa o que a rota faz. Exemplo: `tags: ["workout-plan"]`, `summary: "Create a new workout plan"`.
 - **SEMPRE** use Zod v4, **NUNCA** use o Zod v3.
+- Ao definir schemas Zod, **NUNCA** use `z.string().url()`, `z.string().uuid()` ou `z.nativeEnum(...)`. **SEMPRE** prefira `z.url()`, `z.uuid()` e `z.enum(...)`, conforme documentado em `‎CLAUDE.md`, para evitar warnings de `ZodString` deprecated.
 - **SEMPRE** crie os schemas das operações de criação e atualização dentro de @src/schemas.
 - **SEMPRE** use o @src/schemas/index.ts para tipar respostas de erro.
 - Uma rota **NUNCA** deve conter regras de negócio, apenas validações de dados (com o Zod) e de autenticação (se necessário).
