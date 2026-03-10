@@ -13,6 +13,7 @@ import {
 import z from "zod";
 
 import { auth } from "./lib/auth.js";
+import { env } from "./lib/env.js";
 import { aiRoutes } from "./routes/ai.js";
 import { homeRoutes } from "./routes/home.js";
 import { statsRoutes } from "./routes/stats.js";
@@ -33,8 +34,8 @@ await app.register(fastifySwagger, {
     },
     servers: [
       {
-        description: "Localhost",
-        url: "http://localhost:3000",
+        description: "API Base URL",
+        url: env.API_BASE_URL,
       },
     ],
   },
@@ -77,7 +78,7 @@ await app.register(userTrainDataRoutes, { prefix: "/me" });
 await app.register(aiRoutes);
 
 await app.register(fastifyCors, {
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+  origin: [env.WEB_APP_BASE_URL],
   credentials: true,
 });
 
