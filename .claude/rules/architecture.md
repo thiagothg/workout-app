@@ -1,3 +1,8 @@
+## Git
+
+- **SEMPRE** use [Conventional Commits](https://www.conventionalcommits.org/) para mensagens de commit. Exemplo: `feat: add start workout session endpoint`, `fix: workout plan validation`, `docs: update architecture rules`.
+- **NUNCA** faça commit sem a permissão explícita do usuário. Sempre aguarde o usuário pedir para commitar.
+
 ## Fastify: Rotas de API
 
 - **SEMPRE** siga os princípios do REST para criar rotas. Exemplo: `GET /workout-plans`, `GET /workout-plans/:id/days`.
@@ -7,6 +12,7 @@
 - **SEMPRE** use Zod v4, **NUNCA** use o Zod v3.
 - Ao definir schemas Zod, **NUNCA** use `z.string().url()`, `z.string().uuid()` ou `z.nativeEnum(...)`. **SEMPRE** prefira `z.url()`, `z.uuid()` e `z.enum(...)`, conforme documentado em `‎CLAUDE.md`, para evitar warnings de `ZodString` deprecated.
 - **SEMPRE** crie os schemas das operações de criação e atualização dentro de @src/schemas.
+- **SEMPRE** use `z.enum(WeekDay)` importado de `../generated/prisma/enums.js` para tipar campos de dia da semana nos schemas. **NUNCA** use `z.string()` para representar WeekDay.
 - **SEMPRE** use o @src/schemas/index.ts para tipar respostas de erro.
 - Uma rota **NUNCA** deve conter regras de negócio, apenas validações de dados (com o Zod) e de autenticação (se necessário).
 - Quando uma rota precisar ser protegida (acessível apenas por usuários autenticados), **SEMPRE** use o `auth.api.getSession` (@src/lib/auth.ts) para recuperar a sessão do usuário.
