@@ -13,6 +13,7 @@ import {
 import z from "zod";
 
 import { auth } from "./lib/auth.js";
+import { aiRoutes } from "./routes/ai.js";
 import { homeRoutes } from "./routes/home.js";
 import { statsRoutes } from "./routes/stats.js";
 import { userTrainDataRoutes } from "./routes/user-train-data.js";
@@ -73,6 +74,7 @@ await app.register(workoutPlanRoutes, { prefix: "/workout-plans" });
 await app.register(homeRoutes, { prefix: "/home" });
 await app.register(statsRoutes, { prefix: "/stats" });
 await app.register(userTrainDataRoutes, { prefix: "/me" });
+await app.register(aiRoutes);
 
 await app.register(fastifyCors, {
   origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
