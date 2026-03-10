@@ -10,6 +10,7 @@ import {
 } from "../errors/index.js";
 import { auth } from "../lib/auth.js";
 import {
+  CreateWorkoutPlanResponseSchema,
   ErrorSchema,
   StartWorkoutSessionResponseSchema,
   UpdateWorkoutSessionBodySchema,
@@ -39,7 +40,7 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
         updatedAt: true,
       }),
       response: {
-        201: WorkoutPlanSchema,
+        201: CreateWorkoutPlanResponseSchema,
         400: ErrorSchema,
         401: ErrorSchema,
         404: ErrorSchema,

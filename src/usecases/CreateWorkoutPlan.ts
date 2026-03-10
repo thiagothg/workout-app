@@ -30,11 +30,13 @@ export interface OutputDto {
   createdAt: Date;
   updatedAt: Date;
   workoutDays: Array<{
+    id: string;
     name: string;
     weekDay: WeekDay;
     isRest: boolean;
     estimatedDurationInSeconds: number;
     exercises: Array<{
+      id: string;
       order: number;
       name: string;
       sets: number;

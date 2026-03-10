@@ -30,12 +30,42 @@ export const WorkoutPlanSchema = z.object({
   updatedAt: z.coerce.date(),
   workoutDays: z.array(
     z.object({
+      id: z.uuid(),
       name: z.string().trim().min(1),
       weekDay: z.enum(WeekDay),
-      isRest: z.boolean().default(false),
+      isRest: z.boolean(),
       estimatedDurationInSeconds: z.number().min(1),
       exercises: z.array(
         z.object({
+          id: z.uuid(),
+          order: z.number().min(0),
+          name: z.string().trim().min(1),
+          sets: z.number().min(1),
+          reps: z.number().min(1),
+          restTimeInSeconds: z.number().min(1),
+        }),
+      ),
+    }),
+  ),
+});
+
+export const CreateWorkoutPlanResponseSchema = z.object({
+  id: z.uuid(),
+  name: z.string().trim().min(1),
+  coverImageUrl: z.url().nullable(),
+  isActive: z.boolean(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+  workoutDays: z.array(
+    z.object({
+      id: z.uuid(),
+      name: z.string().trim().min(1),
+      weekDay: z.enum(WeekDay),
+      isRest: z.boolean(),
+      estimatedDurationInSeconds: z.number().min(1),
+      exercises: z.array(
+        z.object({
+          id: z.uuid(),
           order: z.number().min(0),
           name: z.string().trim().min(1),
           sets: z.number().min(1),
@@ -117,4 +147,33 @@ export const HomeResponseSchema = z.object({
       workoutDayStarted: z.boolean(),
     }),
   ),
+});
+
+export const StatsQuerySchema = z.object({
+  from: z
+    .string()
+    .refine(
+      (val) => /^\d{4}-\d{2}-\d{2}$/.test(val),
+      "Invalid date format. Expected YYYY-MM-DD",
+    ),
+  to: z
+    .string()
+    .refine(
+      (val) => /^\d{4}-\d{2}-\d{2}$/.test(val),
+      "Invalid date format. Expected YYYY-MM-DD",
+    ),
+});
+
+export const StatsResponseSchema = z.object({
+  workoutStreak: z.number().int().nonnegative(),
+  consistencyByDay: z.record(
+    z.string(),
+    z.object({
+      workoutDayCompleted: z.boolean(),
+      workoutDayStarted: z.boolean(),
+    }),
+  ),
+  completedWorkoutsCount: z.number().int().nonnegative(),
+  conclusionRate: z.number().min(0).max(1),
+  totalTimeInSeconds: z.number().int().nonnegative(),
 });
