@@ -6,6 +6,7 @@ import { prisma } from "../lib/db.js";
 interface InputDto {
   userId: string;
   name: string;
+  coverImageUrl?: string;
   workoutDays: Array<{
     name: string;
     weekDay: WeekDay;
@@ -23,10 +24,28 @@ interface InputDto {
 
 export interface OutputDto {
   id: string;
+  name: string;
+  coverImageUrl: string | null;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  workoutDays: Array<{
+    name: string;
+    weekDay: WeekDay;
+    isRest: boolean;
+    estimatedDurationInSeconds: number;
+    exercises: Array<{
+      order: number;
+      name: string;
+      sets: number;
+      reps: number;
+      restTimeInSeconds: number;
+    }>;
+  }>;
 }
 
 export class CreateWorkoutPlan {
-  async execute(dto: InputDto) {
+  async execute(dto: InputDto): Promise<OutputDto> {
     const existingWorkoutPlan = await prisma.workoutPlan.findFirst({
       where: {
         isActive: true,
@@ -44,6 +63,7 @@ export class CreateWorkoutPlan {
         data: {
           id: crypto.randomUUID(),
           name: dto.name,
+          coverImageUrl: dto.coverImageUrl,
           userId: dto.userId,
           isActive: true,
           workoutDays: {

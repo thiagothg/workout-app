@@ -1,4 +1,5 @@
 import { NotFoundError } from "../errors/index.js";
+import { WeekDay } from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
 // Data Transfer Object
@@ -9,12 +10,13 @@ interface InputDto {
 export interface OutputDto {
   id: string;
   name: string;
+  coverImageUrl: string | null;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
   workoutDays: Array<{
     name: string;
-    weekDay: string;
+    weekDay: WeekDay;
     isRest: boolean;
     estimatedDurationInSeconds: number;
     exercises: Array<{
@@ -28,10 +30,11 @@ export interface OutputDto {
 }
 
 export class ListWorkoutPlan {
-  async execute(dto: InputDto) {
-    const existingWorkoutPlan = await prisma.workoutPlan.findMany({
+  async execute(dto: InputDto): Promise<OutputDto | null> {
+    const activeWorkoutPlan = await prisma.workoutPlan.findFirst({
       where: {
         userId: dto.userId,
+        isActive: true,
       },
       include: {
         workoutDays: {
@@ -42,10 +45,6 @@ export class ListWorkoutPlan {
       },
     });
 
-    if (!existingWorkoutPlan) {
-      throw new NotFoundError("No active workout plan found for the user.");
-    }
-
-    return existingWorkoutPlan;
+    return activeWorkoutPlan;
   }
 }

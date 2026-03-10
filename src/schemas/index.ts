@@ -12,7 +12,7 @@ export const StartWorkoutSessionResponseSchema = z.object({
 });
 
 export const WorkoutPlanSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string().trim().min(1),
   coverImageUrl: z.string().url().nullable(),
   isActive: z.boolean(),
@@ -21,7 +21,7 @@ export const WorkoutPlanSchema = z.object({
   workoutDays: z.array(
     z.object({
       name: z.string().trim().min(1),
-      weekDay: z.nativeEnum(WeekDay),
+      weekDay: z.enum(WeekDay),
       isRest: z.boolean().default(false),
       estimatedDurationInSeconds: z.number().min(1),
       exercises: z.array(
