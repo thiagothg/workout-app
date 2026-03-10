@@ -1,0 +1,14 @@
+---
+globs: *.ts
+alwaysApply: false
+---
+
+## Typescript
+
+- nunca use any no Typescript
+- Sempre use arrow functions
+- Sempre use types ao invés de interfaces
+
+## Rotas Fastify
+
+- **SEMPRE** inclua `tags` e `summary` no schema de cada rota. `tags` agrupa a rota na documentação OpenAPI; `summary` descreve a operação de forma concisa.
