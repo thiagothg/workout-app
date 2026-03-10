@@ -20,7 +20,22 @@ import { statsRoutes } from "./routes/stats.js";
 import { userTrainDataRoutes } from "./routes/user-train-data.js";
 import { workoutPlanRoutes } from "./routes/workout-plan.js";
 
-const app = Fastify({ logger: true });
+const envToLogger = {
+  development: {
+    transport: {
+      target: "pino-pretty",
+      options: {
+        colorize: true,
+        translateTime: "HH:MM:ss Z",
+        ignore: "pid,hostname",
+      },
+    },
+  },
+  production: true,
+  test: false,
+};
+
+const app = Fastify({ logger: envToLogger[env.NODE_ENV] });
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
